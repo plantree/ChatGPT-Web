@@ -26,6 +26,13 @@ We thought the Web might be the best choice to help people use ChatGPT more conv
 
 #### 2. How to use
 
+The whole project has been divided into two parts:
+
+- Client
+- Server
+
+which could be deployed independently, and the easiest way to do this is by using Docker.
+
 
 
 #### 3. Technology inside
