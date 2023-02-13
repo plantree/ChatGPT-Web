@@ -1,0 +1,12 @@
+port: 8000
+max_retry: 3
+timeout: 20
+# limit of per minute
+limit: 1
+# encryption obfuscation
+salt: chatgpt
+tokens: 
+  - hello
+# api key (random select)
+keys:
+  - sk-xxxxxxxxxxxxxxxxxxx
