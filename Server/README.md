@@ -23,4 +23,4 @@ Your Flask application is now available at `http://localhost:3000`.
 
 Deploy the example using [Vercel](https://vercel.com?utm_source=github&utm_medium=readme&utm_campaign=vercel-examples):
 
-[![Deploy with Vercel](https://vercel.com/button)](https%3A%2F%2Fvercel.com%2Fnew%2Fclone%3Frepository-url%3Dhttps%3A%2F%2Fgithub.com%2Fplantree%2FChatGPT-Web%2Ftree%2Fmain%2FServer%26demo-title%3DChatGPT%20Server%26demo-description%3DDeploy%20ChatGPT%20Server%20on%20Vercel%20with%20Serverless%20Functions%20using%20the%20Python%20Runtime.%26demo-url%3Dhttps%3A%2F%2Fflask-python-template.vercel.app%2F%26demo-image%3Dhttps%3A%2F%2Fassets.vercel.com%2Fimage%2Fupload%2Fv1669994156%2Frandom%2Fflask.png)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/plantree/ChatGPT-Web/tree/main/Server&demo-title=ChatGPT Server&demo-description=Deploy ChatGPT Server on Vercel with Serverless Functions using the Python Runtime.&demo-url=https://flask-python-template.vercel.app/&demo-image=https://assets.vercel.com/image/upload/v1669994156/random/flask.png)
