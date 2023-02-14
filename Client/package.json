@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@fireworks-js/vue": "^2.10.1",
     "vue": "^3.2.45",
     "vuex": "^4.0.2"
   },

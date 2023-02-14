@@ -15,20 +15,26 @@ import ChatBox from './ChatBox.vue'
 
 <script lang="ts">
 import axios from 'axios'
+import { Fireworks } from 'fireworks-js'
 
 export default {
     data: () => ({
         user: null,
         messages: [
             {
-                text: '欢迎和ChatGPT交流!欢迎和ChatGPT交流!欢迎和ChatGPT交流!欢迎和ChatGPT交流!欢迎和ChatGPT交流!欢迎和ChatGPT交流!',
+                text: '欢迎和ChatGPT交流!',
                 author: 'ChatGPT'
             }
         ],
-        allowSend: true
+        allowSend: true,
+        fireworks: null
     }),
     updated: function () {
         this.scrollToBottom()
+        const container = document.querySelector('div.messages')
+        if (container !== null && this.fireworks === null) {
+            this.fireworks = new Fireworks(container)
+        }
     },
     methods: {
         isLeft(message) {
@@ -69,6 +75,16 @@ export default {
                 text: text,
                 author: this.user.name
             })
+            if (text === '我爱你') {
+                this.messages.push({
+                    text: '我也爱你💖',
+                    author: 'ChatGPT'
+                })
+                this.fireworks.start()
+                this.allowSend = true
+                return
+            }
+            this.fireworks.stop()
             this.messages.push({
                 text: '正在输入中...',
                 author: 'ChatGPT'
@@ -77,7 +93,7 @@ export default {
             const server = this.$store.state.server
             const request_url = `${server}/api/chatgpt/ask?prompt=${text}&token=${this.user.name}`
             try {
-                            const ret = await axios.post(request_url)
+                const ret = await axios.post(request_url)
             if (ret.status === 200 && ret.data.code === 0) {
                 this.messages[this.messages.length - 1].text = ret.data.msg
             } else {
