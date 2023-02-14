@@ -42,9 +42,9 @@ CHATGPT_API = "https://api.openai.com/v1/completions"
 DEFAULT_CONFIG = {
     # ref: https://platform.openai.com/docs/models/gpt-3
     'model': 'text-davinci-003',
-    'max_tokens': 2048,
+    'max_tokens': 4000,
     # deterministic
-    'temperature': 0.2
+    'temperature': 0.4
 }
 
 G_CONFIG = parse_yaml('./config.yml')
@@ -65,6 +65,10 @@ limiter = Limiter(
 session = requests.Session()
 retries = Retry(total=G_CONFIG['max_retry'], backoff_factor=0.1)
 session.mount(CHATGPT_API, HTTPAdapter(max_retries=retries))
+
+@app.route("/")
+def index():
+    return 'Hello, ChatGPT'
 
 ''''
 args
