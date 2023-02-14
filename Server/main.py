@@ -4,10 +4,10 @@ A simple server for request ChatGPT
 from flask import Flask, jsonify, request
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
+from flask_cors import CORS
 import requests
 from requests.adapters import HTTPAdapter, Retry
 import copy
-import os
 import yaml
 import hashlib
 import random
@@ -22,7 +22,7 @@ def generate_response(code, message):
 def parse_yaml(file):
     with open(file, 'r') as f:
         content = f.read()
-        config = yaml.load(content)
+        config = yaml.load(content, Loader=yaml.FullLoader)
         return config
 
 def encrypt_md5(s):
@@ -49,11 +49,14 @@ DEFAULT_CONFIG = {
 
 G_CONFIG = parse_yaml('./config.yml')
 G_CONFIG['encrypted_tokens'] = []
+# for token in G_CONFIG['tokens']:
+#     G_CONFIG['encrypted_tokens'].append(encrypt_md5(token))
 for token in G_CONFIG['tokens']:
-    G_CONFIG['encrypted_tokens'].append(encrypt_md5(token))
+    G_CONFIG['encrypted_tokens'].append(token)
 #######################################
 
 app = Flask(__name__)
+CORS(app, origins=G_CONFIG['origins'])
 limiter = Limiter(
     get_remote_address,
     app=app,
@@ -63,6 +66,22 @@ session = requests.Session()
 retries = Retry(total=G_CONFIG['max_retry'], backoff_factor=0.1)
 session.mount(CHATGPT_API, HTTPAdapter(max_retries=retries))
 
+''''
+args
+    token
+'''
+@app.post("/api/chatgpt/login")
+@limiter.limit(str(G_CONFIG['limit']) + '/minute')
+def login_chatgpt():
+    args = request.args
+    token = args.get('token')
+    if token == None:
+        return generate_response(-1001, 'need token to ask')
+    else:
+        if token not in G_CONFIG['encrypted_tokens']:
+            return generate_response(-1002, 'illegal token')
+    return generate_response(0, 'success')
+        
 '''
 args:
     prompt

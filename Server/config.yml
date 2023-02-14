@@ -1,12 +1,16 @@
 port: 8000
 max_retry: 3
 timeout: 20
+# CORS
+origins: 
+  - 'http://localhost:*'
+  - 'https://localhost:*'
 # limit of per minute
-limit: 1
-# encryption obfuscation
+limit: 10
+# encryption obfuscation (not use recently)
 salt: chatgpt
 tokens: 
-  - hello
+  - test
 # api key (random select)
 keys:
-  - sk-xxxxxxxxxxxxxxxxxxx
+  - sk-xxx
