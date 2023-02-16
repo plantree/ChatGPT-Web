@@ -1,7 +1,9 @@
+# export port
 port: 8000
 max_retry: 3
 timeout: 20
 # CORS
+use_cors: false
 origins: 
   - 'http://localhost:*'
   - 'https://localhost:*'
@@ -9,6 +11,7 @@ origins:
 limit: 10
 # encryption obfuscation (not use recently)
 salt: chatgpt
+# for login
 tokens: 
   - test
 # api key (random select)

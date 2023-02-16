@@ -24,18 +24,81 @@ We thought the Web might be the best choice to help people use ChatGPT more conv
 - Easy to interact
 - Easy to deploy independently
 
-#### 2. How to use
+#### 2. Features
+
+- [x] Use token and CORS to access (limit malicious access)
+- [x] Limit access frequency (the API of ChatGPT has limitations)
+- [ ] RESTful API and easy to adjust request parameters
+
+#### 3. How to use
 
 The whole project has been divided into two parts:
 
 - Client
 - Server
 
-which could be deployed independently, and the easiest way to do this is by using Docker.
+which could be deployed independently, and the easiest way to do this is by using Vercel and Docker.
 
+- Vercel: using vercel to deploy the Client (free, simple enough and do not need extra machine)
+- Docker: using docker to deploy the server, because too long timeout is not allowed by vercel (limits 10 seconds)
 
+##### 3.1 Deploy
 
-#### 3. Technology inside
+- Deploy client: [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/plantree/ChatGPT-Web/tree/main/Client)
+
+- Deploy Server:
+
+  ```bash
+  $ git clone https://github.com/plantree/ChatGPT-Web.git && cd Server
+  # change config.yml
+  $ docker build -t chat-server .
+  # export port
+  $ docker run -it -p 8000:8000 --name chat-server chat-server
+  ```
+
+##### 3.2 Config
+
+- Client
+
+  ```javascript
+  // Client/src/main.ts
+  // create a new store instance
+  const store = createStore({
+      state() {
+          return {
+              // global config
+              server: 'http://127.0.0.1:8000',
+          }
+      }
+  })
+  ```
+
+- Server
+
+  ```yaml
+  # Server/config.yml
+  # export port
+  port: 8000
+  max_retry: 3
+  timeout: 20
+  # CORS
+  use_cors: false
+  origins: 
+    - 'http://localhost:*'
+    - 'https://localhost:*'
+  # limit of per minute
+  limit: 10
+  # encryption obfuscation (not use recently)
+  salt: chatgpt
+  # for login
+  tokens: 
+    - test
+  # api key (random select)
+  keys:
+    - sk-xxxx
+  ```
+
+#### 4. Technology inside
 
 - Front-end
   - Vue
@@ -43,7 +106,17 @@ which could be deployed independently, and the easiest way to do this is by usin
 - Back-end
   - Flask
 
+#### Changelogs
+
+##### v0.9.0 (2023.02.14)
+
+###### Feature
+
+1. Server: request `api.openai` with retry and timeout, add CORS and query limitation for protecting
+2. Client: login and chat with server upon token
+
 #### Reference
 
 1. https://openai.com/api/
+1. https://openai.com/api/pricing/
 

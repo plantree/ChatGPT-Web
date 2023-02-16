@@ -5,7 +5,7 @@ import ChatBox from './ChatBox.vue'
 </script>
 
 <template>
-    <div class="messages md:px-20 px-2 h-[36rem] overflow-auto scroll-mx-0" v-if="user" ref="scrollDiv">
+    <div class="messages md:px-20 px-2 h-[34rem] overflow-auto scroll-mx-0" v-if="user" ref="scrollDiv">
         <Message v-for="message in messages" :key="message.id" :text="message.text" :left="isLeft(message)"
             :author="message.author" />
     </div>

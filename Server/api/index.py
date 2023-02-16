@@ -56,12 +56,18 @@ for token in G_CONFIG['tokens']:
 #######################################
 
 app = Flask(__name__)
-CORS(app, origins=G_CONFIG['origins'])
+
+if G_CONFIG['use_cors']:
+    CORS(app, origins=G_CONFIG['origins'])
+else:
+    CORS(app, origins=['*'])
+
 limiter = Limiter(
     get_remote_address,
     app=app,
     default_limits=['1000 per day', '100 per hour']
 )
+
 session = requests.Session()
 retries = Retry(total=G_CONFIG['max_retry'], backoff_factor=0.1)
 session.mount(CHATGPT_API, HTTPAdapter(max_retries=retries))
@@ -125,6 +131,7 @@ def request_chatgpt():
 
 if __name__ == '__main__':
     app.run(
-        host='127.0.0.1',
+        # export to public
+        host='0.0.0.0',
         port=G_CONFIG['port'],
         debug=True)
