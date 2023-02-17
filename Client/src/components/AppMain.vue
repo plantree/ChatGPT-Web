@@ -10,7 +10,7 @@ import ChatBox from './ChatBox.vue'
             :author="message.author" />
     </div>
     <ChatBox v-if="user" @submit="onSubmit" />
-    <LoginDialog v-if="!user" @submit="onRegister" />
+    <LoginDialog v-if="!user" @submit="onRegister" :showLoginStatus="showLoginStatus"/>
 </template>
 
 <script lang="ts">
@@ -27,7 +27,8 @@ export default {
             }
         ],
         allowSend: true,
-        fireworks: null
+        fireworks: null,
+        showLoginStatus: false
     }),
     updated: function () {
         this.scrollToBottom()
@@ -59,10 +60,13 @@ export default {
                     this.user = {
                         'name': name
                     }
-                } 
+                    this.showLoginStatus = false
+                    return
+                }
             } catch (ex) {
                 console.log(ex)
             }
+            this.showLoginStatus = true
         },
         async onSubmit(event, text) {
             event.preventDefault()
@@ -94,11 +98,11 @@ export default {
             const request_url = `${server}/api/chatgpt/ask?prompt=${text}&token=${this.user.name}`
             try {
                 const ret = await axios.post(request_url)
-            if (ret.status === 200 && ret.data.code === 0) {
-                this.messages[this.messages.length - 1].text = ret.data.msg
-            } else {
-                this.messages[this.messages.length - 1].text = '遇到一个错误, 请刷新后重试'
-            }
+                if (ret.status === 200 && ret.data.code === 0) {
+                    this.messages[this.messages.length - 1].text = ret.data.msg
+                } else {
+                    this.messages[this.messages.length - 1].text = '遇到一个错误, 请刷新后重试'
+                }
             } catch (ex) {
                 console.log(ex)
                 this.messages[this.messages.length - 1].text = '遇到一个错误, 请刷新后重试'
@@ -109,7 +113,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
 /* Works on Firefox */
 * {
     scrollbar-width: thin;
@@ -130,4 +134,27 @@ export default {
     border-radius: 20px;
     border: 3px solid gray;
 }
+
+:root {
+  --fk-color-primary: #646cff;
+  --vf-success-lighter: #dcfce7;
+  --vf-color-success: #22c55e;
+  --vf-danger-lighter: #fee2e2;
+  --vf-color-danger: #ef4444;
+  --fk-max-width-input: 40em;
+}
+.form-bg-success {
+  background-color: var(--vf-success-lighter);
+}
+.form-color-success {
+  color: var(--vf-color-success);
+}
+.form-bg-danger {
+  background-color: var(--vf-danger-lighter);
+}
+.form-color-danger {
+  color: var(--vf-color-danger);
+}
+
+
 </style>
