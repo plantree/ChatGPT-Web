@@ -7,7 +7,7 @@
                     class="outline-none h-[2.6rem] px-5 bg-gray-100 rounded-lg text-center focus:bg-gray-200 focus:shadow-[0_0_1.5rem_var(--tw-shadow-color)]">
                 <button
                     class="text-gray-200 hover:text-gray-100 bg-main/75 hover:bg-main border-transparen hover:bg-main-200 font-bold"
-                    :disabled="name === ''" @click="name = ''; $emit('submit', $event, name)">开始!</button>
+                    :disabled="name === ''" @click="$emit('submit', $event, name); name = '';">开始!</button>
 
             </form>                
             <div v-if="showLoginStatus"

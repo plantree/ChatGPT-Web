@@ -1,5 +1,6 @@
 import { createApp } from 'vue'
 import { createStore } from 'vuex'
+import naive from "naive-ui";
 import './style.css'
 import App from './App.vue'
 
@@ -8,10 +9,11 @@ const store = createStore({
     state() {
         return {
             // global config
-            server: 'http://127.0.0.1:8000',
+            server: import.meta.env.VITE_SERVER,
         }
     }
 })
 createApp(App)
     .use(store)
+    .use(naive)
     .mount('#app')

@@ -8,6 +8,9 @@ import ChatBox from './ChatBox.vue'
     <div class="messages md:px-20 px-2 h-[34rem] overflow-auto scroll-mx-0" v-if="user" ref="scrollDiv">
         <Message v-for="message in messages" :key="message.id" :text="message.text" :left="isLeft(message)"
             :author="message.author" />
+        <div style="display: flex; flex-flow: row wrap; justify-content:center;" v-if="loading">
+            <Spin />
+        </div>
     </div>
     <ChatBox v-if="user" @submit="onSubmit" />
     <LoginDialog v-if="!user" @submit="onRegister" :showLoginStatus="showLoginStatus"/>
@@ -16,6 +19,7 @@ import ChatBox from './ChatBox.vue'
 <script lang="ts">
 import axios from 'axios'
 import { Fireworks } from 'fireworks-js'
+import Spin from './Spin.vue'
 
 export default {
     data: () => ({
@@ -28,7 +32,8 @@ export default {
         ],
         allowSend: true,
         fireworks: null,
-        showLoginStatus: false
+        showLoginStatus: false,
+        loading : false //true为加载中，默认为false
     }),
     updated: function () {
         this.scrollToBottom()
@@ -74,6 +79,7 @@ export default {
                 return
             }
             this.allowSend = false
+            this.loading = true //加载中
             // guard area
             this.messages.push({
                 text: text,
@@ -107,6 +113,7 @@ export default {
                 console.log(ex)
                 this.messages[this.messages.length - 1].text = '遇到一个错误, 请刷新后重试'
             }
+            this.loading = false //加载完成
             this.allowSend = true
         }
     }
