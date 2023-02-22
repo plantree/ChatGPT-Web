@@ -102,7 +102,9 @@ which could be deployed independently, and the easiest way to do this is by usin
 
 ##### v0.9.1(2023.02.22)
 
+###### Feature
 
+1. Client: add Spin and login error message
 
 ##### v0.9.0 (2023.02.14)
 
@@ -110,6 +112,11 @@ which could be deployed independently, and the easiest way to do this is by usin
 
 1. Server: request `api.openai` with retry and timeout, add CORS and query limitation for protecting
 2. Client: login and chat with server upon token
+
+#### Contributors
+<a href="https://github.com/plantree/ChatGPT-Web/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=plantree/ChatGPT-Web" />
+</a>
 
 #### Reference
 
