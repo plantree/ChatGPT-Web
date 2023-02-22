@@ -61,18 +61,10 @@ which could be deployed independently, and the easiest way to do this is by usin
 - Client
 
   ```javascript
-  // Client/src/main.ts
-  // create a new store instance
-  const store = createStore({
-      state() {
-          return {
-              // global config
-              server: 'http://127.0.0.1:8000',
-          }
-      }
-  })
+  // Client/.env
+  VITE_SERVER=http://127.0.0.1:8000
   ```
-
+  
 - Server
 
   ```yaml
@@ -107,6 +99,10 @@ which could be deployed independently, and the easiest way to do this is by usin
   - Flask
 
 #### Changelogs
+
+##### v0.9.1(2023.02.22)
+
+
 
 ##### v0.9.0 (2023.02.14)
 
