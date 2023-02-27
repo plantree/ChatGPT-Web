@@ -11,6 +11,8 @@ import copy
 import yaml
 import hashlib
 import random
+import logging
+from logging.config import fileConfig
 
 ############# utils ####################
 def generate_response(code, message):
@@ -51,6 +53,9 @@ G_CONFIG = parse_yaml('./config.yml')
 G_CONFIG['encrypted_tokens'] = []
 for token in G_CONFIG['tokens']:
     G_CONFIG['encrypted_tokens'].append(encrypt_md5(token))
+
+fileConfig('./logging.conf')
+logger = logging.getLogger()
 #######################################
 
 app = Flask(__name__)
@@ -83,6 +88,7 @@ args
 def login_chatgpt():
     args = request.args
     token = args.get('token')
+    logger.debug(f'login token: {token}')
     if token == None:
         return generate_response(-1001, 'need token to ask')
     else:
@@ -112,6 +118,7 @@ def request_chatgpt():
     if prompt == None:
         return generate_response(-1003, 'need prompt')
     
+    logger.debug(f'prompt: {prompt}, token: {token}')
     # request chatgpt
     config = copy.deepcopy(DEFAULT_CONFIG)
     config['prompt'] = prompt
