@@ -2,6 +2,7 @@
 import LoginDialog from './LoginDialog.vue'
 import Message from './Message.vue'
 import ChatBox from './ChatBox.vue'
+import jsMd5 from 'https://cdn.jsdelivr.net/npm/js-md5@0.7.3/+esm'
 </script>
 
 <template>
@@ -20,6 +21,10 @@ import ChatBox from './ChatBox.vue'
 import axios from 'axios'
 import { Fireworks } from 'fireworks-js'
 import Spin from './Spin.vue'
+
+function generateToken(str: string, salt: string) {
+    return jsMd5(str + salt)
+}
 
 export default {
     data: () => ({
@@ -58,12 +63,14 @@ export default {
             event.preventDefault();
             // login
             const server = this.$store.state.server
-            const request_url = `${server}/api/chatgpt/login?token=${name}`
+            const token = generateToken(name, import.meta.env.VITE_SALT)
+            const request_url = `${server}/api/chatgpt/login?token=${token}`
             try {
                 const ret = await axios.post(request_url)
                 if (ret.status === 200 && ret.data.code === 0) {
                     this.user = {
-                        'name': name
+                        'name': name,
+                        'token': token
                     }
                     this.showLoginStatus = false
                     return
@@ -101,7 +108,7 @@ export default {
             })
             // request chatgpt
             const server = this.$store.state.server
-            const request_url = `${server}/api/chatgpt/ask?prompt=${text}&token=${this.user.name}`
+            const request_url = `${server}/api/chatgpt/ask?prompt=${text}&token=${this.user.token}`
             try {
                 const ret = await axios.post(request_url)
                 if (ret.status === 200 && ret.data.code === 0) {

@@ -49,10 +49,8 @@ DEFAULT_CONFIG = {
 
 G_CONFIG = parse_yaml('./config.yml')
 G_CONFIG['encrypted_tokens'] = []
-# for token in G_CONFIG['tokens']:
-#     G_CONFIG['encrypted_tokens'].append(encrypt_md5(token))
 for token in G_CONFIG['tokens']:
-    G_CONFIG['encrypted_tokens'].append(token)
+    G_CONFIG['encrypted_tokens'].append(encrypt_md5(token))
 #######################################
 
 app = Flask(__name__)

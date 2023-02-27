@@ -9,11 +9,11 @@ origins:
   - 'https://localhost:*'
 # limit of per minute
 limit: 10
-# encryption obfuscation (not use recently)
+# encryption obfuscation
 salt: chatgpt
 # for login
 tokens: 
   - test
 # api key (random select)
 keys:
-  - sk-xxxx
+  - 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
