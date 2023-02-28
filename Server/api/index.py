@@ -61,8 +61,10 @@ logger = logging.getLogger()
 app = Flask(__name__)
 
 if G_CONFIG['use_cors']:
+    print('use cors')
     CORS(app, origins=G_CONFIG['origins'])
 else:
+    print('not use cors')
     CORS(app, origins=['*'])
 
 limiter = Limiter(
